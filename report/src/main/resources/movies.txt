@@ -1,0 +1,13 @@
+video_id, title, length, author_id
+1, GER vs POL Euro 2012, 120, 2
+2, BRA vs FRA MS 1998, 120, 2
+3, Rosomak, 45, 1
+4, Titanic, 115, 4
+5, Top Gun, 105, 4
+6, Lodowce, 45, 1
+7, ENG vs CRO MS 2018, 120, 2
+8, Safari 2013, 30, 1
+9, Honey Badger, 45, 1
+10, Zwierzęta Endemiczne, 90, 1
+11, Incepcja, 130, 4
+12, Dno Oceanu, 60, 1
