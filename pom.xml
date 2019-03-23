@@ -25,6 +25,7 @@
     <module>palindrome_product</module>
     <module>identity</module>
     <module>report</module>
+    <module>point_task</module>
   </modules>
 
 
