@@ -26,6 +26,12 @@
     <module>identity</module>
     <module>report</module>
     <module>point_task</module>
+    <module>sunday_warmup</module>
+    <module>searching</module>
+    <module>flight_search</module>
+    <module>Hamburger</module>
+    <module>commands</module>
+    <module>console_game</module>
   </modules>
 
 
