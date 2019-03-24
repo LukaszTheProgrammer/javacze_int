@@ -22,4 +22,8 @@ public class Movie {
         sb.append('}');
         return sb.toString();
     }
+
+    public long getAuthorId() {
+        return authorId;
+    }
 }
