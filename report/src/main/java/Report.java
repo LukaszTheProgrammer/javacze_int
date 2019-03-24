@@ -5,6 +5,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 class Report {
+    private static List<Movie> findUserMovies(List<Movie> movies, long id) {
+        return movies.stream().filter(m -> m.getAuthorId() == id).collect(Collectors.toList());
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         /*
@@ -35,28 +38,45 @@ class Report {
 
         while (scannerOfMovies.hasNext()) {
 
-            movieList.add( Stream.of(scannerOfMovies.nextLine())
+            movieList.add(Stream.of(scannerOfMovies.nextLine())
                     .map(s -> s.split(","))
-                    .map(a -> new Movie(Long.parseLong(a[0].trim()), a[1], Integer.parseInt(a[2].trim()), Long.parseLong(a[3].trim())))
+                    .map(a -> getMovie(a))
                     .collect(Collectors.toList()).get(0));
         }
         Map<Long, List<Movie>> resultMap = new HashMap<>();
 
 
         for (User user : userList) {
-        if(!resultMap.containsKey(user.getUserId())){
-            resultMap.put(user.getUserId(),new ArrayList<>());
-        }
+            if (!resultMap.containsKey(user.getUserId())) {
+                resultMap.put(user.getUserId(), new ArrayList<>());
+            }
 
             for (Movie movie : movieList) {
 
-                if (movie.getAuthorId()==user.getUserId()) {
+                if (movie.getAuthorId() == user.getUserId()) {
                     resultMap.get(user.getUserId()).add(movie);
 
                 }
             }
         }
 
-
+        for (User user : userList) {
+            List<Movie> userMovies = findUserMovies(movieList, user.getUserId());
+            user.addMovies(userMovies);
+        }
+        userList.forEach(user -> System.out.println(user.getName()+" posiada "+ user.getMoviesCount()+" filmow"));
     }
+
+    private static Movie getMovie(String[] a) {
+        long id = Long.parseLong(a[0].trim());
+        String title = a[1];
+        int length = Integer.parseInt(a[2].trim());
+        long authorId = Long.parseLong(a[3].trim());
+        return new Movie()
+                .id(id)
+                .title(title)
+                .length(length)
+                .authorId(authorId);
+    }
+
 }

@@ -1,4 +1,3 @@
-video_id, title, length, author_id
 1, GER vs POL Euro 2012, 120, 2
 2, BRA vs FRA MS 1998, 120, 2
 3, Rosomak, 45, 1

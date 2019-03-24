@@ -12,6 +12,10 @@ public class Movie {
         this.authorId = authorId;
     }
 
+    public Movie() {
+
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Movie{");
@@ -25,5 +29,25 @@ public class Movie {
 
     public long getAuthorId() {
         return authorId;
+    }
+
+    public Movie id(long id) {
+    this.id=id;
+    return this;
+    }
+
+    public Movie title(String title) {
+        this.title=title;
+        return this;
+    }
+
+    public Movie length(int length) {
+        this.length=length;
+        return this;
+    }
+
+    public Movie authorId(long authorId) {
+        this.authorId=authorId;
+        return this;
     }
 }
