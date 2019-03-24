@@ -18,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 class Report {
 
@@ -29,33 +30,50 @@ class Report {
             .collect(Collectors.toList());*/
 
         List<String> fileLines = readFileLines("movies.txt");
-        List<Movie> movies2 = new ArrayList<>();
+        List<Movie> movies = new ArrayList<>();
         for (int i = 1; i < fileLines.size(); ++i) {
             String[] napisy = fileLines.get(i).split(",");
             Movie movie = getMovie(napisy);
-            movies2.add(movie);
+            movies.add(movie);
         }
 
-        movies2.forEach(movie -> System.out.println(movie));
+        movies.forEach(movie -> System.out.println(movie));
 
         List<String> userFileLines = readFileLines("users.txt");
         List<User> users = new ArrayList<>();
         for (int i = 1; i < userFileLines.size(); ++i) {
             String[] napisy = userFileLines.get(i).split(",");
-            User user = getUser(napisy);
+            User user = getUser(napisy, movies);
             users.add(user);
         }
 
         users.forEach(user -> System.out.println(user));
+
+        users.forEach(user -> {
+            System.out.println(user.getName() + " posiada " + user.getMoviesCount() + " filmów");
+        });
     }
 
-    private static User getUser(String[] napisy) {
+    private static List<Movie> findUserMovies(List<Movie> movies, long id) {
+        return movies.stream()
+            .filter(m -> m.getAuthorId() == id)
+            .collect(Collectors.toList());
+    }
+
+    private static User getUser(String[] napisy, List<Movie> allMovies) {
         long id = Long.parseLong(napisy[0].trim());
         String firstName = napisy[1];
         String lastName = napisy[2];
         String email = napisy[3];
 
-        return new User(id, firstName, lastName, email);
+        List<Movie> userMovies = findUserMovies(allMovies, id);
+
+        return new User()
+            .id(id)
+            .firstName(firstName)
+            .lastName(lastName)
+            .email(email)
+            .movies(userMovies);
     }
 
     private static Movie getMovie(String[] listaNapisow) {
@@ -64,7 +82,11 @@ class Report {
         int length = Integer.parseInt(listaNapisow[2].trim());
         long authorId = Long.parseLong(listaNapisow[3].trim());
 
-        return new Movie(id, title, length, authorId);
+        return new Movie()
+            .id(id)
+            .title(title)
+            .length(length)
+            .authorId(authorId);
     }
 
     private static List<String> readFileLines(String filename) throws FileNotFoundException {

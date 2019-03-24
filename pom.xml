@@ -32,6 +32,8 @@
     <module>Hamburger</module>
     <module>commands</module>
     <module>console_game</module>
+    <module>missing_char</module>
+    <module>teamParty</module>
   </modules>
 
 
