@@ -11,5 +11,31 @@
 
   <artifactId>bag_fees_calculator</artifactId>
 
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>compile</scope>
+
+    </dependency>
+    <dependency>
+      <groupId>com.jparams</groupId>
+      <artifactId>jparams-junit4</artifactId>
+      <version>1.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>pl.pragmatists</groupId>
+      <artifactId>JUnitParams</artifactId>
+      <version>1.1.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
 
 </project>
