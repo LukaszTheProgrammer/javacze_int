@@ -30,7 +30,6 @@
     <module>searching</module>
     <module>flight_search</module>
     <module>commands</module>
-    <module>console_game</module>
     <module>missing_char</module>
     <module>teamParty</module>
     <module>week2_day1_warmup</module>

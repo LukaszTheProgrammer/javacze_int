@@ -11,5 +11,11 @@
 
   <artifactId>identity</artifactId>
 
-
+  <dependencies>
+    <dependency>
+      <groupId>de.mkammerer</groupId>
+      <artifactId>argon2-jvm</artifactId>
+      <version>2.5</version>
+    </dependency>
+  </dependencies>
 </project>
