@@ -30,10 +30,9 @@
     <module>searching</module>
     <module>flight_search</module>
     <module>commands</module>
-    <module>missing_char</module>
-    <module>teamParty</module>
     <module>week2_day1_warmup</module>
     <module>bag_fees_calculator</module>
+    <module>week2_day2_warmup</module>
   </modules>
 
 
