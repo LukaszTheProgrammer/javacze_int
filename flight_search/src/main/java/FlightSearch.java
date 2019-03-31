@@ -1,19 +1,29 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class Flight {
 
     private final String from;
     private final String to;
+    private final List<String> connections;
 
     public Flight(String from, String to) {
         this.from = from;
         this.to = to;
+        this.connections = Collections.emptyList();
+    }
+
+    public Flight(String from, List<String> connections, String to) {
+        this.from = from;
+        this.to = to;
+        this.connections = connections;
     }
 
     public String getFrom() {
@@ -22,6 +32,22 @@ class Flight {
 
     public String getTo() {
         return to;
+    }
+
+    public List<String> getConnections() {
+        return connections;
+    }
+
+    @Override
+    public String toString() {
+        String c = connections.stream()
+            .collect(Collectors.joining("->"));
+        String b = c.isEmpty() ? "->" : "->" + c + "->";
+        return from + b + to;
+    }
+
+    public boolean isTo(String destination) {
+        return this.to.equals(destination);
     }
 }
 
@@ -68,7 +94,12 @@ class FlightSearch {
             } else if (command.startsWith("flight")) {
                 String[] parsedCommand = command.split(" ");
                 if (parsedCommand.length == 3) {
-                    findFlight(flights, parsedCommand[1], parsedCommand[2]);
+                    List<Flight> result = findFlight(flights, parsedCommand[1], parsedCommand[2]);
+                    if (result.size() == 0) {
+                        System.out.println("Nie znaleziono lotów spełniających kryterium");
+                    } else {
+                        result.forEach(System.out::println);
+                    }
                 }
 
             } else {
@@ -77,39 +108,33 @@ class FlightSearch {
         }
     }
 
-    private static void findFlight(List<Flight> flights,
-                                   String from, String to) {
-        List<Flight> flightsFromGivenDeparture = flights.stream()
-            .filter(flight -> flight.getFrom().equals(from))
+    private static List<Flight> findFlight(List<Flight> flights,
+                                           String departure, String destination) {
+
+        Map<Boolean, List<Flight>> flighsByMatchingDeparture = flights.stream()
+            .collect(Collectors.partitioningBy(f -> f.getFrom().equals(departure)));
+
+        List<Flight> flightsFromDeparture = flighsByMatchingDeparture.get(true);
+        List<Flight> restOfFlights = flighsByMatchingDeparture.get(false);
+
+        List<Flight> matching = flightsFromDeparture.stream()
+            .filter(f -> f.isTo(destination))
             .collect(Collectors.toList());
 
-        Optional<Flight> matchingFlight = flightsFromGivenDeparture.stream()
-            .filter(flight -> flight.getTo().equals(to))
-            .findFirst();
+        List<Flight> connectingFlights = flightsFromDeparture.stream()
+            .filter(f -> !f.isTo(destination))
+            .flatMap(f -> findFlight(restOfFlights, f.getTo(), destination).stream()
+                .map(pp -> makeConnection(f, pp)))
+            .collect(Collectors.toList());
 
-        if (matchingFlight.isPresent()) {
-            Flight flight = matchingFlight.get();
-            System.out.println(flight.getFrom() + " " + flight.getTo());
-        } else {
-            List<List<Flight>> result = new ArrayList<>();
-            for (Flight flight : flightsFromGivenDeparture) {
-                for (Flight flight2 : flights) {
-                    if (flight.getTo().equals(flight2.getFrom()) &&
-                        flight2.getTo().equals(to)) {
-                        result.add(Arrays.asList(flight, flight2));
-                    }
-                }
-            }
+        return Stream.concat(matching.stream(), connectingFlights.stream())
+            .collect(Collectors.toList());
+    }
 
-            result.forEach(f -> {
-                    Flight f1 = f.get(0);
-                    Flight f2 = f.get(1);
-                    System.out.println(f1.getFrom() + " -> " + f1.getTo() + " ->" + f2.getTo());
-                }
-            );
-
-        }
-
+    private static Flight makeConnection(Flight f1, Flight f2) {
+        List<String> connections = new ArrayList<>(f2.getConnections());
+        connections.add(0, f1.getTo());
+        return new Flight(f1.getFrom(), connections, f2.getTo());
     }
 
     private static void listAvailableAirports(List<Flight> flights) {
