@@ -1,6 +1,6 @@
 interface TaxCalculator {
 
-    int calculateTax(double income);
+    double calculateTax(double income);
 }
 
 public class Warmup {
@@ -25,6 +25,53 @@ public class Warmup {
         //calculateTax(50000) -> 9500
         //calculateTax(50000) -> 9500
         //calculateTax(50000) -> 9500
+        LineTax lineTax = new LineTax();
+        NoLineTax noLineTax = new NoLineTax();
 
+        System.out.println(lineTax.calculateTax(100000));
+        System.out.println(noLineTax.calculateTax(50000));
+        System.out.println(noLineTax.calculateTax(50000));
+        System.out.println(noLineTax.calculateTax(30000));
+        System.out.println(noLineTax.calculateTax(50000));
+
+    }
+
+    public static class LineTax implements TaxCalculator {
+
+        @Override
+        public double calculateTax(double income) {
+            return income * 0.19;
+        }
+    }
+
+    public static class NoLineTax implements TaxCalculator {
+        private final double TAX_18PERCENT_LIMIT = 88500;
+        private double incomes;
+        private double check;
+        private double freeOfTaxAmond = 3500;
+        private boolean isOver1time = false;
+
+        @Override
+        public double calculateTax(double income) {
+            incomes += income;
+
+            if (incomes > TAX_18PERCENT_LIMIT && !isOver1time) {
+
+                double p = Math.max(0, TAX_18PERCENT_LIMIT - income);
+                check = (p) * 0.18;
+                double tax = (income - p) * 0.32;
+                isOver1time = true;
+                return tax + check;
+            } else if (incomes > TAX_18PERCENT_LIMIT && isOver1time) {
+                return income * 0.32;
+            } else {
+                double taxableIncome = Math.max(0, income - freeOfTaxAmond);
+
+                freeOfTaxAmond = freeOfTaxAmond - (income - taxableIncome);
+
+                return taxableIncome * 0.18;
+            }
+
+        }
     }
 }
