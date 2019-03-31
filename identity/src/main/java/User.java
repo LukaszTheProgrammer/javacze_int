@@ -30,10 +30,14 @@ public class User {
     }
 
     private String getValidatedPassword(String password) {
-        if (!VALID_PASSWORD_PATTERN.matcher(password).matches()) {
-            throw new RuntimeException("Invalid password");
+        if (password.startsWith("$argon")) {
+            return password;
+        } else {
+            if (!VALID_PASSWORD_PATTERN.matcher(password).matches()) {
+                throw new RuntimeException("Invalid password");
+            }
+            return hash(password);
         }
-        return hash(password);
     }
 
     private String hash(String password) {
@@ -43,5 +47,13 @@ public class User {
     @Override
     public String toString() {
         return email + " " + password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

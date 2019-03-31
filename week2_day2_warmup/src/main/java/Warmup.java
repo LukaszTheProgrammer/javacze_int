@@ -1,6 +1,33 @@
 interface TaxCalculator {
 
-    int calculateTax(double income);
+    double calculateTax(double income);
+}
+
+class ScaleTaxCalculator implements TaxCalculator{
+
+    private static final double TAX_FREE_AMMOUNT = 3500.00;
+    private static final int TAX_THRESOLD = 85000;
+    private static final double TAX_32 = 0.32;
+    private static final double TAX_18 = 0.18;
+
+    private double remainingTaxFreeAmmount = TAX_FREE_AMMOUNT;
+
+    private double accumulatedIncome = 0;
+
+    @Override
+    public double calculateTax(double income) {
+        double taxableIncome = Math.max(0, income - remainingTaxFreeAmmount);
+        remainingTaxFreeAmmount = remainingTaxFreeAmmount - (income - taxableIncome);
+        accumulatedIncome += taxableIncome;
+        if(accumulatedIncome > TAX_THRESOLD){
+            double ammountAfter85k = Math.min(accumulatedIncome - TAX_THRESOLD,
+                taxableIncome) ;
+            double ammountBefore85k = taxableIncome - ammountAfter85k;
+            return (ammountAfter85k * TAX_32) + (ammountBefore85k * TAX_18);
+        } else {
+            return taxableIncome * TAX_18;
+        }
+    }
 }
 
 public class Warmup {
@@ -25,6 +52,13 @@ public class Warmup {
         //calculateTax(50000) -> 9500
         //calculateTax(50000) -> 9500
         //calculateTax(50000) -> 9500
+
+        TaxCalculator stx = new ScaleTaxCalculator();
+//        System.out.println(stx.calculateTax(2500));
+//        System.out.println(stx.calculateTax(2500));
+        System.out.println(stx.calculateTax(50000));
+        System.out.println(stx.calculateTax(50000));
+        System.out.println(stx.calculateTax(50000));
 
     }
 }
