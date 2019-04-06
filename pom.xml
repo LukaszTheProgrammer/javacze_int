@@ -14,8 +14,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>11</source>
-          <target>11</target>
+          <source>8</source>
+          <target>8</target>
         </configuration>
       </plugin>
     </plugins>
@@ -33,7 +33,11 @@
     <module>week2_day1_warmup</module>
     <module>bag_fees_calculator</module>
     <module>week2_day2_warmup</module>
-      <module>doble</module>
+    <module>dobble</module>
+    <module>todo</module>
+    <module>stack</module>
+    <module>rent_a_cart</module>
+    <module>week3_day1_warmup</module>
   </modules>
 
 
