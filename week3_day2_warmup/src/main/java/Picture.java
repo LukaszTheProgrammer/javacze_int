@@ -9,4 +9,8 @@ public class Picture {
         this.imgFile = imgFile;
         this.authorId = authorId;
     }
+
+    public Long getAuthorId() {
+        return authorId;
+    }
 }
