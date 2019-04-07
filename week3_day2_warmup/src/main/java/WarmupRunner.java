@@ -36,6 +36,10 @@ public class WarmupRunner {
     );
 
     public static void main(String[] args) {
-
+        /*
+        Mając powyższe listy Teams, Authors i Pictures
+        wydrukuj autora z najwyższa ilością obrazków
+        oraz team z najwyższą ilością obrazków.
+         */
     }
 }
