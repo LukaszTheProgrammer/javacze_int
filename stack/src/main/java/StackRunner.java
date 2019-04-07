@@ -15,5 +15,10 @@ public class StackRunner {
         wyjątek jeśli stos jet pusty.
         Następnie utwórz stos z 10 elementami i wypisz jego zawartość na ekranie
          */
+
+       Stack s=new Stack("Ja","SE","FS");
+
+        System.out.println(s.isEmpty());
+
     }
 }
